@@ -1,0 +1,6 @@
+requests
+python-dateutil
+google-generativeai
+PyYAML
+PyGithub
+numpy

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tomorrow Task Input</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Plan Your Next Day</h1>
+      <p>
+        Enter what you want to accomplish tomorrow. Clicking the button will
+        open a new GitHub Issue in
+        <a href="https://github.com/wTaylorBickelmann/trello_chat_app" target="_blank">trello_chat_app</a>
+        labelled <code>daily-input</code>. Our nightly bot will turn it into Trello
+        cards automatically.
+      </p>
+      <textarea id="taskInput" rows="10" placeholder="e.g. Finish project report, practice guitar for 30 min, order groceries…"></textarea>
+      <br />
+      <button id="createIssue">Create GitHub Issue</button>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
