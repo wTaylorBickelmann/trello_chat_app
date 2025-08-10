@@ -4,3 +4,4 @@ google-generativeai
 PyYAML
 PyGithub
 numpy
+python-dotenv

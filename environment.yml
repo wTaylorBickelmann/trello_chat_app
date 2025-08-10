@@ -1,0 +1,16 @@
+name: trello_llm
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  # Conda-available deps
+  - requests
+  - python-dateutil
+  - pyyaml
+  - numpy
+  # Anything not on Conda gets pip-installed
+  - pip:
+      - google-generativeai
+      - PyGithub
