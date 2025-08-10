@@ -50,9 +50,9 @@ def generate_tasks(current_cards: List[str], user_input: str, rag_context: str) 
         f"Relevant past context:\n{rag_context}\n\n"
         "---\nGenerate new tasks:" 
     )
-    # Initialize chat with system prompt in the history so we don't need to pass a dict payload each time
-    chat = CHAT_MODEL.start_chat(history=[{"role": "system", "parts": [SYSTEM_PROMPT]}])
-    # Send the user prompt as a single message string – the SDK will wrap it appropriately
+    # Start chat with the system prompt using the official `system_instruction` parameter
+    chat = CHAT_MODEL.start_chat(system_instruction=SYSTEM_PROMPT)
+    # Send the user prompt
     resp = chat.send_message(full_prompt)
     lines = [l.strip("- ") for l in resp.text.split("\n") if l.strip()]
     # Deduplicate & filter empties
