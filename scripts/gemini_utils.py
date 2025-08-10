@@ -27,6 +27,8 @@ SYSTEM_PROMPT = (
     "Avoid duplicates with existing cards. Respond with one task per line."
     "Use context to create tasks that are relevant to the user's goals."
     "Creates tasks in appropriate list that are suggested based on what you know about the user's goals."
+    "Add tasks to typical executions will be at 1am so tasks taken from user's input should be added to 'Today's list' unless otherwise specified"
+    "Based on context or past input tasks can be suggested and added to 'Gemini suggestions' list"
 )
 
 def embed_text(text: str) -> List[float]:
