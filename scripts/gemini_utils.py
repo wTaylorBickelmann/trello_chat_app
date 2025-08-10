@@ -50,8 +50,8 @@ def generate_tasks(current_cards: List[str], user_input: str, rag_context: str) 
         f"Relevant past context:\n{rag_context}\n\n"
         "---\nGenerate new tasks:" 
     )
-    # Start chat with the system prompt using the official `system_instruction` parameter
-    chat = CHAT_MODEL.start_chat(system_instruction=SYSTEM_PROMPT)
+        # Start chat with the system prompt provided as a first user message (Gemini SDK only allows 'user'/'model' roles)
+    chat = CHAT_MODEL.start_chat(history=[{"role": "user", "parts": [SYSTEM_PROMPT]}])
     # Send the user prompt
     resp = chat.send_message(full_prompt)
     lines = [l.strip("- ") for l in resp.text.split("\n") if l.strip()]
