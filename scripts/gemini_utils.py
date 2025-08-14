@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import logging
 from dotenv import load_dotenv
 
 # Load variables from a .env file in project root, if present
@@ -54,8 +55,17 @@ def generate_tasks(current_cards: List[str], user_input: str, rag_context: str) 
     )
         # Start chat with the system prompt provided as a first user message (Gemini SDK only allows 'user'/'model' roles)
     chat = CHAT_MODEL.start_chat(history=[{"role": "user", "parts": [SYSTEM_PROMPT]}])
-    # Send the user prompt
+    # Send the user prompt and attempt to extract text
     resp = chat.send_message(full_prompt)
-    lines = [l.strip("- ") for l in resp.text.split("\n") if l.strip()]
-    # Deduplicate & filter empties
-    return list(dict.fromkeys([ln for ln in lines if ln]))
+    try:
+        raw_text = resp.text
+    except ValueError:
+        # Gemini returned no textual content (e.g., blocked or empty). Bail gracefully.
+        logging.warning("Gemini response contained no text. finish_reason=%s. Safety info=%s", getattr(resp.candidates[0], "finish_reason", "unknown"), getattr(resp.candidates[0], "safety_ratings", "n/a"))
+        return []
+
+    lines = [l.strip("- ") for l in raw_text.split("\n") if l.strip()]    # Deduplicate & filter empties
+    if not lines:
+        logging.warning("Gemini returned empty task list after parsing. finish_reason=%s. Safety info=%s", getattr(resp.candidates[0], 'finish_reason', 'unknown'), getattr(resp.candidates[0], 'safety_ratings', 'n/a'))
+        return []
+    return list(dict.fromkeys(lines))
