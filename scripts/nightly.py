@@ -89,7 +89,8 @@ def main() -> None:
         print("Generated tasks:")
         for t in new_tasks:
             print("-", t)
-        create_cards(new_tasks)
+        # Put Gemini-generated tasks into dedicated list
+        create_cards(new_tasks, list_name="Gemini Suggestions")
 
     # Close issues with comment
     for iss in issues:
