@@ -21,6 +21,7 @@ from dateutil import tz
 
 from github_utils import get_open_daily_inputs, archive_inputs, comment_and_close
 from trello_utils import get_open_cards, create_cards
+from trello_extra import get_archived_cards
 from gemini_utils import embed_text, generate_tasks
 
 EMBED_FILE = Path("inputs/embeddings.jsonl")
@@ -70,9 +71,14 @@ def main() -> None:
     emb = embed_text(user_input_combined)
     _save_embedding(user_input_combined, emb)
 
-    # Fetch Trello current cards
-    cards = get_open_cards()
-    card_titles = [c["name"] for c in cards]
+        # Fetch Trello cards (open + archived) and store their embeddings
+    cards_open = get_open_cards()
+    cards_arch = get_archived_cards()
+
+    for card in cards_open + cards_arch:
+        _save_embedding(card["name"], embed_text(card["name"]))
+
+    card_titles = [c["name"] for c in cards_open]  # For duplicate avoidance
 
     rag_context = _select_rag_context(user_input_combined)
 
